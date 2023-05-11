@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: flaskdemo
+  name: flaskdemo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: flaskdemo
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: flaskdemo
+    spec:
+      containers:
+      - image: tanmayb/images:1
+        name: flaskdemo
+        resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lb-service
+  labels:
+    app: lb-service
+spec:
+  type: NodePort
+  ports:
+  - nodePort: 30000
+    port: 80
+    targetPort: 5000
+  selector:
+    app: flaskdemo
